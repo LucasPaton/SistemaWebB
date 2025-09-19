@@ -31,7 +31,7 @@ export const getClientes = async (): Promise<Cliente[]> => {
 
     const cliente: Cliente = {
       id: colunas[0],
-      cpfCnpj: colunas[1].replace(/[^\d]/g, ''), // ✅ normaliza CPF/CNPJ
+      cpfCnpj: colunas[1].replace(/[^\d]/g, ''), // normaliza CPF/CNPJ
       rg: colunas[2] || undefined,
       dataNascimento: new Date(colunas[3]),
       nome: colunas[4],
