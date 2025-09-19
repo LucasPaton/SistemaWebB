@@ -47,79 +47,125 @@ const ClientesList = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white p-6">
-      <h1 className="text-3xl font-bold text-blue-700 mb-6">Lista de Clientes</h1>
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-between">
+      <div className="p-6 flex-grow">
+        <div className="max-w-screen-lg mx-auto space-y-10">
+          {/* Título com destaque azul */}
+          <div className="bg-blue-700 rounded-xl px-6 py-4 animate-fade-in-up">
+            <h1 className="text-3xl font-bold text-white">Lista de Clientes</h1>
+          </div>
 
-      <div className="flex items-center mb-8 max-w-xl bg-blue-100 rounded-full shadow px-4 py-2">
-        <FaSearch className="text-blue-600 mr-2" />
-        <input
-          type="text"
-          placeholder="Pesquisar por Nome ou CPF"
-          value={search}
-          onChange={e => {
-            setSearch(e.target.value);
-            setCurrentPage(1);
-          }}
-          className="w-full bg-transparent outline-none text-gray-800 placeholder:text-gray-500"
-        />
-      </div>
-
-      <ul className="space-y-6">
-        {paginated.map(cliente => (
-          <li
-            key={cliente.id}
-            className="bg-blue-100 rounded-xl shadow-md px-6 py-5 flex justify-between items-center hover:shadow-lg transition-shadow"
-          >
-            <div className="space-y-2 text-gray-800">
-              <div className="flex items-center gap-2">
-                <FaUser className="text-blue-700" />
-                <p className="font-semibold text-lg">{cliente.nome}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <FaIdCard className="text-blue-700" />
-                <p><strong>CPF/CNPJ:</strong> {cliente.cpfCnpj}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <FaEnvelope className="text-blue-700" />
-                <p><strong>Email:</strong> {cliente.email}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <FaBuilding className="text-blue-700" />
-                <p><strong>Agência:</strong> Nº {cliente.codigoAgencia} — {getNomeAgencia(cliente.codigoAgencia)}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <FaMoneyBillWave className="text-blue-700" />
-                <p><strong>Saldo:</strong> R$ {getSaldoDoCliente(cliente.cpfCnpj).toLocaleString()}</p>
-              </div>
+          {/* Campo de busca e contador em uma linha */}
+          <div className="flex items-center justify-between gap-4 max-w-screen-lg mx-auto animate-fade-in-up">
+            <div className="flex items-center w-full max-w-xl bg-white rounded-full shadow-md px-4 py-3">
+              <FaSearch className="text-blue-600 mr-3 text-lg" />
+              <input
+                type="text"
+                placeholder="Pesquisar por Nome ou CPF"
+                value={search}
+                onChange={e => {
+                  setSearch(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="w-full bg-transparent outline-none text-gray-800 placeholder:text-gray-500"
+              />
             </div>
 
-            <Link
-              to={`/cliente/${cliente.id}`}
-              className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-700 transition-colors"
-            >
-              Mostrar mais informações
-            </Link>
-          </li>
-        ))}
-      </ul>
+            <div className="flex items-center gap-2 text-blue-800 font-medium">
+              <span className="bg-blue-600 text-white px-3 py-1 rounded-full shadow text-sm">
+                {filtered.length}
+              </span>
+              <span className="text-sm">Usuários Encontrados</span>
+            </div>
+          </div>
 
-      <div className="flex justify-center mt-10 space-x-2">
-        <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="px-4 py-1 rounded-full bg-blue-100 text-blue-700 border border-blue-300 disabled:opacity-50"
-        >
-          Anterior
-        </button>
-        <span className="px-3 py-1 text-sm text-blue-700">{currentPage} / {totalPages}</span>
-        <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="px-4 py-1 rounded-full bg-blue-100 text-blue-700 border border-blue-300 disabled:opacity-50"
-        >
-          Próxima
-        </button>
+          {/* Lista de clientes */}
+          <ul className="space-y-6">
+            {paginated.map((cliente, index) => (
+              <li
+                key={cliente.id}
+                className="bg-blue-100 rounded-xl shadow-sm px-6 py-5 flex justify-between items-center
+                           transition-all duration-300 transform hover:scale-[1.01] hover:shadow-md animate-fade-in-up"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <div className="space-y-2 text-blue-900">
+                  <div className="flex items-center gap-2">
+                    <FaUser className="text-blue-700" />
+                    <p className="font-semibold text-lg tracking-wide">{cliente.nome}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FaIdCard className="text-blue-700" />
+                    <p><strong>CPF/CNPJ:</strong> {cliente.cpfCnpj}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FaEnvelope className="text-blue-700" />
+                    <p><strong>Email:</strong> {cliente.email}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FaBuilding className="text-blue-700" />
+                    <p><strong>Agência:</strong> Nº {cliente.codigoAgencia} — {getNomeAgencia(cliente.codigoAgencia)}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FaMoneyBillWave className="text-blue-700" />
+                    <p><strong>Saldo:</strong> R$ {getSaldoDoCliente(cliente.cpfCnpj).toLocaleString()}</p>
+                  </div>
+                </div>
+
+                <Link
+                  to={`/cliente/${cliente.id}`}
+                  className="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium
+                             hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
+                >
+                  Ver detalhes
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* Paginação */}
+          <div className="flex justify-center mt-12 space-x-2 flex-wrap animate-fade-in-up">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 rounded-full bg-blue-100 text-blue-700 border border-blue-300 disabled:opacity-50"
+            >
+              &laquo;
+            </button>
+
+            {Array.from({ length: totalPages }, (_, index) => {
+              const page = index + 1;
+              const isActive = page === currentPage;
+
+              return (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-4 py-2 rounded-full border font-medium ${
+                    isActive
+                      ? 'bg-blue-600 text-white border-blue-600'
+                      : 'bg-blue-100 text-blue-700 border-blue-300 hover:bg-blue-200'
+                  }`}
+                >
+                  {page}
+                </button>
+              );
+            })}
+
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 rounded-full bg-blue-100 text-blue-700 border border-blue-300 disabled:opacity-50"
+            >
+              &raquo;
+            </button>
+          </div>
+        </div>
       </div>
+
+      {/* Rodapé institucional */}
+      <footer className="bg-blue-800 text-white text-center py-4 text-sm">
+        &copy; {new Date().getFullYear()} Banco Exemplo S.A. — Todos os direitos reservados.
+      </footer>
     </div>
   );
 };
